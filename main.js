@@ -99,5 +99,8 @@ function stateChanged(event){
 
 function videoFinished(){
 	currentId++;
+  if(currentId==ids.length){
+    currentId=0;
+  }
 	player.loadVideoById({'videoId':ids[currentId], 'suggestedQuality': 'tiny'});
 }
