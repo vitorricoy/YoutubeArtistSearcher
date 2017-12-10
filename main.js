@@ -45,8 +45,21 @@ function search() {
   					    let duracao = item.contentDetails.duration;
   					    duracao = convertISO8601ToSeconds(duracao);
   					    if(duracao>=60 && duracao<=600){
-  					    	newIds.push(item.id);
-                  newNames.push(item.snippet.title);
+                  let repetida=false;
+                  names.forEach(function(itemName){
+                    if(Math.round(similarity(item.snippet.title,itemName)*10000)/100>=50){
+                      repetida=true;
+                    }
+                  });
+                  newNames.forEach(function(itemName){
+                    if(Math.round(similarity(item.snippet.title,itemName)*10000)/100>=50){
+                      repetida=true;
+                    }
+                  });
+                  if(!repetida){
+                    newIds.push(item.id);
+                    newNames.push(item.snippet.title);
+                  }
   					    }
   					});
   					ids=ids.concat(newIds);
@@ -69,15 +82,6 @@ function search() {
   player = new YT.Player('video-container', {host: 'https://www.youtube.com', videoId: ids[currentId], playerVars: { 'autoplay': 1, 'controls': 1}, events: {'onStateChange': stateChanged, 'onReady:':playerReady}});
 }
 
-function sleep(milliseconds) {
-  var start = new Date().getTime();
-  for (var i = 0; i < 1e7; i++) {
-    if ((new Date().getTime() - start) > milliseconds){
-      break;
-    }
-  }
-}
-
 function convertISO8601ToSeconds(input) {
     let reptms = /^PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?$/;
     let hours = 0, minutes = 0, seconds = 0, totalseconds;
@@ -89,6 +93,47 @@ function convertISO8601ToSeconds(input) {
         totalseconds = hours * 3600  + minutes * 60 + seconds;
     }
     return totalseconds;
+}
+
+function similarity(s1, s2) {
+  let longer = s1;
+  let shorter = s2;
+  if (s1.length < s2.length) {
+    longer = s2;
+    shorter = s1;
+  }
+  let longerLength = longer.length;
+  if (longerLength === 0) {
+    return 1.0;
+  }
+  return (longerLength - editDistance(longer, shorter)) / parseFloat(longerLength);
+}
+
+function editDistance(s1, s2) {
+  s1 = s1.toLowerCase();
+  s2 = s2.toLowerCase();
+
+  let costs = new Array();
+  for (var i = 0; i <= s1.length; i++) {
+    let lastValue = i;
+    for (var j = 0; j <= s2.length; j++) {
+      if (i == 0)
+        costs[j] = j;
+      else {
+        if (j > 0) {
+          let newValue = costs[j - 1];
+          if (s1.charAt(i - 1) != s2.charAt(j - 1))
+            newValue = Math.min(Math.min(newValue, lastValue),
+              costs[j]) + 1;
+          costs[j - 1] = lastValue;
+          lastValue = newValue;
+        }
+      }
+    }
+    if (i > 0)
+      costs[s2.length] = lastValue;
+  }
+  return costs[s2.length];
 }
 
 function playerReady(){
