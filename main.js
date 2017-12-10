@@ -55,7 +55,7 @@ function search() {
   while(ids.length>quantity){
     ids.pop();
   }
-  player = new YT.Player('video-container', {height: '360', width: '640', host: 'https://www.youtube.com', videoId: ids[currentId], playerVars: { 'autoplay': 1, 'controls': 1}, events: {'onStateChange': stateChanged, 'onReady:':playerReady}});
+  player = new YT.Player('video-container', {host: 'https://www.youtube.com', videoId: ids[currentId], playerVars: { 'autoplay': 1, 'controls': 1}, events: {'onStateChange': stateChanged, 'onReady:':playerReady}});
 }
 
 function sleep(milliseconds) {
