@@ -39,7 +39,7 @@ function search() {
 			tokenAtual=jsonLoop.nextPageToken;
 		});
 	});
-	sleep(500);
+	sleep(2000);
 	console.log('fim sleep');
   }
   while(ids.length>quantity){
