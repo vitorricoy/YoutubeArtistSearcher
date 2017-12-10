@@ -1,9 +1,12 @@
 
 var ids=[];
 var player;
+var currentId;
 
 function search() {
   ids=[];
+  currentId=0;
+  player=null;
   let q = $('#query').val();
   let url='https://www.googleapis.com/youtube/v3/search?part=id&maxResults=50&videoCategoryId=10&type=video&key=AIzaSyCtohEkJ6mCItORJn4nSlC3y2LEuHMxyOs';
   let quantity = $('#quantity').val();
@@ -52,8 +55,8 @@ function search() {
   while(ids.length>quantity){
     ids.pop();
   }
-  player = new YT.Player('video-container', {height: '360', width: '640', videoId: ids[0], playerVars: { 'autoplay': 1, 'controls': 0 }});
-  player.loadVideoById({'videoId':ids[0], 'suggestedQuality': 'small'});
+  player = new YT.Player('video-container', {height: '360', width: '640', videoId: currentId, playerVars: { 'autoplay': 1, 'controls': 0 }, 'onStateChange': stateChanged});
+  player.loadVideoById({'videoId':currentId, 'suggestedQuality': 'tiny'});
 }
 
 function sleep(milliseconds) {
@@ -76,4 +79,20 @@ function convertISO8601ToSeconds(input) {
         totalseconds = hours * 3600  + minutes * 60 + seconds;
     }
     return totalseconds;
+}
+
+function stateChanged(event){
+	switch (event.data) {
+        case YT.PlayerState.UNSTARTED:
+            player.playVideo();
+            break;
+        case YT.PlayerState.ENDED:
+            videoFinished();
+            break;
+    }
+}
+
+function videoFinished(){
+	currentId++;
+	player.loadVideoById({'videoId':currentId, 'suggestedQuality': 'tiny'});
 }
