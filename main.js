@@ -20,6 +20,8 @@ function search() {
 			jsonLoop.items.forEach(function(item){
 				novosIds.push(item.id.videoId);
 			});
+			console.log("Novos ID's 1");
+			console.log(novosIds);
 			let stringIds = "";
 			for(let i=0; i<ids.length; i++){
 				stringIds+=ids[i];
@@ -41,6 +43,8 @@ function search() {
 					    	novosIds.push(item.id);
 					    }
 					});
+					console.log("Novos ID's 2");
+					console.log(novosIds);
 					ids=ids.concat(novosIds);
 					tokenAtual=jsonLoop.nextPageToken;
 				}
