@@ -9,13 +9,6 @@ function search() {
   	json.items.forEach(function(item){
   		ids.push(item.id.videoId);
   	});
-  	let stringIds = ""
-  	for(let i=0; i<ids.length; i++){
-  		stringIds+=ids[i];
-  		if(i!=ids.length-1){
-  			stringIds+=',';
-  		}
-  	}
   	console.log(ids);
   	refreshBasedInDurations();
   	console.log(ids);
@@ -23,6 +16,13 @@ function search() {
 }
 
 function refreshBasedInDurations(){
+  	let stringIds = "";
+  	for(let i=0; i<ids.length; i++){
+  		stringIds+=ids[i];
+  		if(i!=ids.length-1){
+  			stringIds+=',';
+  		}
+  	}
   	let urlDuration = 'https://www.googleapis.com/youtube/v3/videos?part=contentDetails&key=AIzaSyCtohEkJ6mCItORJn4nSlC3y2LEuHMxyOs'
     $.getJSON(urlDuration + "&id=" + stringIds, function (jsonDuration) {
     	ids=[];
