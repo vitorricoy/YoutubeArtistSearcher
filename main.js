@@ -1,5 +1,6 @@
 
 var ids=[];
+var player;
 
 function search() {
   ids=[];
@@ -51,7 +52,8 @@ function search() {
   while(ids.length>quantity){
     ids.pop();
   }
-  console.log(ids);
+  player = new YT.Player('video-container', {height: '360', width: '640', videoId: ids[0]});
+  player.loadVideoById('videoId':ids[0], 'suggestedQuality': 'small');
 }
 
 function sleep(milliseconds) {
