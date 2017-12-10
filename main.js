@@ -20,12 +20,10 @@ function search() {
 			jsonLoop.items.forEach(function(item){
 				novosIds.push(item.id.videoId);
 			});
-			console.log("Novos ID's 1");
-			console.log(novosIds);
 			let stringIds = "";
-			for(let i=0; i<ids.length; i++){
-				stringIds+=ids[i];
-				if(i!=ids.length-1){
+			for(let i=0; i<novosIds.length; i++){
+				stringIds+=novosIds[i];
+				if(i!=novosIds.length-1){
 				  	stringIds+=',';
 				}
 			}
@@ -43,8 +41,6 @@ function search() {
 					    	novosIds.push(item.id);
 					    }
 					});
-					console.log("Novos ID's 2");
-					console.log(novosIds);
 					ids=ids.concat(novosIds);
 					tokenAtual=jsonLoop.nextPageToken;
 				}
