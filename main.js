@@ -41,7 +41,7 @@ function search() {
 					    	novosIds.push(item.id);
 					    }
 					});
-					ids.concat(novosIds);
+					ids=ids.concat(novosIds);
 					tokenAtual=jsonLoop.nextPageToken;
 				}
 			});
