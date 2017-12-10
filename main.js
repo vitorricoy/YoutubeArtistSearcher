@@ -23,39 +23,40 @@ function search() {
     	type: 'GET',
     	async: false,
     	success: function (jsonLoop) {
-			jsonLoop.items.forEach(function(item){
-				newIds.push(item.id.videoId);
-			});
-			let stringIds = "";
-			for(let i=0; i<newIds.length; i++){
-				stringIds+=newIds[i];
-				if(i!=newIds.length-1){
-				  	stringIds+=',';
-				}
-			}
-			let urlDuration = 'https://www.googleapis.com/youtube/v3/videos?part=contentDetails,snippet&key=AIzaSyCtohEkJ6mCItORJn4nSlC3y2LEuHMxyOs'
-			$.ajax({
-				url: (urlDuration + "&id=" + stringIds),
-				type: 'GET',
-				async: false,
-				success: function (jsonDuration) {
-					newIds=[];
-          newNames=[];
-					jsonDuration.items.forEach(function(item){
-					    let duracao = item.contentDetails.duration;
-					    duracao = convertISO8601ToSeconds(duracao);
-					    if(duracao>=60 && duracao<=600){
-					    	newIds.push(item.id);
-                newNames.push(item.snippet.title);
-					    }
-					});
-					ids=ids.concat(newIds);
-          names=names.concat(newNames);
-					tokenAtual=jsonLoop.nextPageToken;
-				}
-			});
-		}
-	});
+        console.log(jsonLoop);
+  			jsonLoop.items.forEach(function(item){
+  				newIds.push(item.id.videoId);
+  			});
+  			let stringIds = "";
+  			for(let i=0; i<newIds.length; i++){
+  				stringIds+=newIds[i];
+  				if(i!=newIds.length-1){
+  				  	stringIds+=',';
+  				}
+  			}
+  			let urlDuration = 'https://www.googleapis.com/youtube/v3/videos?part=contentDetails,snippet&key=AIzaSyCtohEkJ6mCItORJn4nSlC3y2LEuHMxyOs'
+  			$.ajax({
+  				url: (urlDuration + "&id=" + stringIds),
+  				type: 'GET',
+  				async: false,
+  				success: function (jsonDuration) {
+  					newIds=[];
+            newNames=[];
+  					jsonDuration.items.forEach(function(item){
+  					    let duracao = item.contentDetails.duration;
+  					    duracao = convertISO8601ToSeconds(duracao);
+  					    if(duracao>=60 && duracao<=600){
+  					    	newIds.push(item.id);
+                  newNames.push(item.snippet.title);
+  					    }
+  					});
+  					ids=ids.concat(newIds);
+            names=names.concat(newNames);
+  					tokenAtual=jsonLoop.nextPageToken;
+  				}
+  			});
+  		}
+	  });
   }
   while(ids.length>quantity){
     ids.pop();
