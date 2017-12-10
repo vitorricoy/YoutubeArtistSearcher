@@ -63,7 +63,7 @@ function search() {
   names.forEach(function(item, index){
     $('#playlist').append(`<li class="list-group-item" id="item${index}"><a href="javascript:changeVideo(${index})">${item}</a></li>`);
   });
-  $(`item0`).addClass('active');
+  $(`#item0`).addClass('active');
   $('#playlist').removeClass('invisible');
   player = new YT.Player('video-container', {host: 'https://www.youtube.com', videoId: ids[currentId], playerVars: { 'autoplay': 1, 'controls': 1}, events: {'onStateChange': stateChanged, 'onReady:':playerReady}});
 }
@@ -114,6 +114,8 @@ function videoFinished(){
 }
 
 function changeVideo(n){
+  $(`#item${currentId}`).removeClass('active');
+  $(`#item${n}`).addClass('active');
   currentId=n;
   player.loadVideoById({'videoId':ids[currentId], 'suggestedQuality': 'tiny'});
 }
