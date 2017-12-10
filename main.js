@@ -93,6 +93,6 @@ function stateChanged(event){
 }
 
 function videoFinished(){
-	currentId++;
-	player.loadVideoById({'videoId':currentId, 'suggestedQuality': 'tiny'});
+	player = new YT.Player('video-container', {height: '360', width: '640', videoId: currentId, playerVars: { 'autoplay': 1, 'controls': 0 }, 'onStateChange': stateChanged});
+  player.setPlaybackQuality('tiny');
 }
