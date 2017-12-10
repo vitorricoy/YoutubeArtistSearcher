@@ -52,7 +52,7 @@ function search() {
   while(ids.length>quantity){
     ids.pop();
   }
-  player = new YT.Player('video-container', {height: '360', width: '640', videoId: ids[0], autoplay: '1', controls: '0' });
+  player = new YT.Player('video-container', {height: '360', width: '640', videoId: ids[0], playerVars: { 'autoplay': 1, 'controls': 0 }});
   player.loadVideoById({'videoId':ids[0], 'suggestedQuality': 'small'});
 }
 
