@@ -32,6 +32,7 @@ function search() {
     	let tokenAtual=json.nextPageToken;
     	let novosIds;
     	while(quantity>ids.length){
+    		console.log(ids);
     		novosIds=[];
     		$.getJSON(url + "&q=" + q + "&pageToken=" + tokenAtual, function (jsonLoop) {
 			  	jsonLoop.items.forEach(function(item){
@@ -57,6 +58,7 @@ function search() {
 			    	});
 			    	console.log(novosIds);
 			    	ids.concat(novosIds);
+			    	tokenAtual=jsonLoop.nextPageToken;
 			    });
 			});
 			sleep(500);
