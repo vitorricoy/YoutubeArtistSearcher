@@ -15,15 +15,14 @@ function search() {
   let url='https://www.googleapis.com/youtube/v3/search?part=id&maxResults=50&videoCategoryId=10&type=video&key=AIzaSyCtohEkJ6mCItORJn4nSlC3y2LEuHMxyOs';
   let quantity = $('#quantity').val();
   let tokenAtual=null;
-  let newIds;
-  let newNames;
+  let newIds=[];
+  let newNames=[];
   while(Number(quantity)>ids.length){
     $.ajax({
     	url: (url + "&q=" + q + ((tokenAtual==null)?(''):("&pageToken=" + tokenAtual))),
     	type: 'GET',
     	async: false,
     	success: function (jsonLoop) {
-        console.log(jsonLoop);
   			jsonLoop.items.forEach(function(item){
   				newIds.push(item.id.videoId);
   			});
