@@ -53,7 +53,7 @@ function search() {
     ids.pop();
   }
   player = new YT.Player('video-container', {height: '360', width: '640', videoId: ids[0]});
-  player.loadVideoById('videoId':ids[0], 'suggestedQuality': 'small');
+  player.loadVideoById({'videoId':ids[0], 'suggestedQuality': 'small'});
 }
 
 function sleep(milliseconds) {
