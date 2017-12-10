@@ -56,7 +56,7 @@ function search() {
     ids.pop();
   }
   player = new YT.Player('video-container', {height: '360', width: '640', videoId: currentId, playerVars: { 'autoplay': 1, 'controls': 0 }, 'onStateChange': stateChanged});
-  player.loadVideoById({'videoId':currentId, 'suggestedQuality': 'tiny'});
+  player.setPlaybackQuality('tiny');
 }
 
 function sleep(milliseconds) {
