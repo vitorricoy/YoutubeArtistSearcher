@@ -8,15 +8,15 @@ function search() {
   let quantity = $('#quantity').val();
   let tokenAtual=null;
   let novosIds;
-  while(quantity>ids.length){
+  while(Number(quantity)>ids.length){
     novosIds=[];
-    console.log(url + "&q=" + q + ((tokenAtual==null)?(''):("&pageToken=" + tokenAtual)));
+    console.log(ids.length)
+    console.log(quantity);
     $.ajax({
     	url: (url + "&q=" + q + ((tokenAtual==null)?(''):("&pageToken=" + tokenAtual))),
     	type: 'GET',
     	async: false,
     	success: function (jsonLoop) {
-			console.log(jsonLoop);
 			jsonLoop.items.forEach(function(item){
 				novosIds.push(item.id.videoId);
 			});
