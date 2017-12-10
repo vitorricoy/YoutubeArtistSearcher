@@ -55,7 +55,7 @@ function search() {
   while(ids.length>quantity){
     ids.pop();
   }
-  player = new YT.Player('video-container', {height: '360', width: '640', videoId: currentId, playerVars: { 'autoplay': 1, 'controls': 0 }, events: {'onStateChange': stateChanged, 'onReady:':playerReady}});
+  player = new YT.Player('video-container', {height: '360', width: '640', videoId: ids[currentId], playerVars: { 'autoplay': 1, 'controls': 0 }, events: {'onStateChange': stateChanged, 'onReady:':playerReady}});
 }
 
 function sleep(milliseconds) {
@@ -81,7 +81,7 @@ function convertISO8601ToSeconds(input) {
 }
 
 function playerReady(){
-	player.loadVideoById({'videoId':currentId, 'suggestedQuality': 'tiny'});
+	player.loadVideoById({'videoId':ids[currentId], 'suggestedQuality': 'tiny'});
 }
 
 function stateChanged(event){
@@ -97,5 +97,5 @@ function stateChanged(event){
 
 function videoFinished(){
 	currentId++;
-	player.loadVideoById({'videoId':currentId, 'suggestedQuality': 'tiny'});
+	player.loadVideoById({'videoId':ids[currentId], 'suggestedQuality': 'tiny'});
 }
