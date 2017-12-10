@@ -16,6 +16,35 @@ function search() {
   			stringIds+=',';
   		}
   	}
-    console.log(stringIds);
+  	console.log(ids);
+  	refreshBasedInDurations();
+  	console.log(ids);
   });
+}
+
+function refreshBasedInDurations(){
+  	let urlDuration = 'https://www.googleapis.com/youtube/v3/videos?part=contentDetails&key=AIzaSyCtohEkJ6mCItORJn4nSlC3y2LEuHMxyOs'
+    $.getJSON(urlDuration + "&id=" + stringIds, function (jsonDuration) {
+    	ids=[];
+    	jsonDuration.items.forEach(function(item){
+    		let duracao = item.contentDetails.duration;
+    		duracao = convertISO8601ToSeconds(duracao);
+    		if(duracao>=60 && duracao<=600){
+    			ids.push(item.id);
+    		}
+    	});
+    });
+}
+
+function convertISO8601ToSeconds(input) {
+    let reptms = /^PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?$/;
+    let hours = 0, minutes = 0, seconds = 0, totalseconds;
+    if (reptms.test(input)) {
+        let matches = reptms.exec(input);
+        if (matches[1]) hours = Number(matches[1]);
+        if (matches[2]) minutes = Number(matches[2]);
+        if (matches[3]) seconds = Number(matches[3]);
+        totalseconds = hours * 3600  + minutes * 60 + seconds;
+    }
+    return totalseconds;
 }
