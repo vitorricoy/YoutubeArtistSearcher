@@ -10,6 +10,7 @@ function search() {
   let novosIds;
   while(quantity>ids.length){
     novosIds=[];
+    console.log(url + "&q=" + q + ((tokenAtual==null)?(''):("&pageToken=" + tokenAtual)));
     $.getJSON(url + "&q=" + q + ((tokenAtual==null)?(''):("&pageToken=" + tokenAtual)), function (jsonLoop) {
 		console.log(jsonLoop);
 		jsonLoop.items.forEach(function(item){
