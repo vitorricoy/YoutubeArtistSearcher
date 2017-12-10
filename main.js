@@ -1,10 +1,12 @@
 
 var ids=[];
+var names=[];
 var player=null;
 var currentId;
 
 function search() {
   ids=[];
+  names=[];
   currentId=0;
   if(player!=null){
     player.destroy();
@@ -13,41 +15,42 @@ function search() {
   let url='https://www.googleapis.com/youtube/v3/search?part=id&maxResults=50&videoCategoryId=10&type=video&key=AIzaSyCtohEkJ6mCItORJn4nSlC3y2LEuHMxyOs';
   let quantity = $('#quantity').val();
   let tokenAtual=null;
-  let novosIds;
+  let newIds;
+  let newNames;
   while(Number(quantity)>ids.length){
-    novosIds=[];
-    console.log(ids.length)
-    console.log(quantity);
     $.ajax({
     	url: (url + "&q=" + q + ((tokenAtual==null)?(''):("&pageToken=" + tokenAtual))),
     	type: 'GET',
     	async: false,
     	success: function (jsonLoop) {
 			jsonLoop.items.forEach(function(item){
-				novosIds.push(item.id.videoId);
+				newIds.push(item.id.videoId);
 			});
 			let stringIds = "";
-			for(let i=0; i<novosIds.length; i++){
-				stringIds+=novosIds[i];
-				if(i!=novosIds.length-1){
+			for(let i=0; i<newIds.length; i++){
+				stringIds+=newIds[i];
+				if(i!=newIds.length-1){
 				  	stringIds+=',';
 				}
 			}
-			let urlDuration = 'https://www.googleapis.com/youtube/v3/videos?part=contentDetails&key=AIzaSyCtohEkJ6mCItORJn4nSlC3y2LEuHMxyOs'
+			let urlDuration = 'https://www.googleapis.com/youtube/v3/videos?part=contentDetails,snippet&key=AIzaSyCtohEkJ6mCItORJn4nSlC3y2LEuHMxyOs'
 			$.ajax({
 				url: (urlDuration + "&id=" + stringIds),
 				type: 'GET',
 				async: false,
 				success: function (jsonDuration) {
-					novosIds=[];
+					newIds=[];
+          newNames=[];
 					jsonDuration.items.forEach(function(item){
 					    let duracao = item.contentDetails.duration;
 					    duracao = convertISO8601ToSeconds(duracao);
 					    if(duracao>=60 && duracao<=600){
-					    	novosIds.push(item.id);
+					    	newIds.push(item.id);
+                newNames.push(item.snippet.title);
 					    }
 					});
-					ids=ids.concat(novosIds);
+					ids=ids.concat(newIds);
+          names=names.concat(newNames);
 					tokenAtual=jsonLoop.nextPageToken;
 				}
 			});
@@ -57,6 +60,11 @@ function search() {
   while(ids.length>quantity){
     ids.pop();
   }
+  names.forEach(function(item, index){
+    $('#playlist').append(`<li class="list-group-item" id="item${index}"><a href="javascript:changeVideo(${index})">${item}</a></li>`);
+  });
+  $(`item${index}`).addClass('active');
+  $('#playlist').removeClass('invisible');
   player = new YT.Player('video-container', {host: 'https://www.youtube.com', videoId: ids[currentId], playerVars: { 'autoplay': 1, 'controls': 1}, events: {'onStateChange': stateChanged, 'onReady:':playerReady}});
 }
 
