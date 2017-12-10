@@ -61,7 +61,8 @@ function search() {
 			    	tokenAtual=jsonLoop.nextPageToken;
 			    });
 			});
-			sleep(500);
+			sleep(1000);
+			console.log('fim sleep');
     	}
     	while(ids.length>quantity){
     		ids.pop();
