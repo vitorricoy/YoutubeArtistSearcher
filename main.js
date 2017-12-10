@@ -1,12 +1,14 @@
 
 var ids=[];
-var player;
+var player=null;
 var currentId;
 
 function search() {
   ids=[];
   currentId=0;
-  player=null;
+  if(player!=null){
+    player.destroy();
+  }
   let q = $('#query').val();
   let url='https://www.googleapis.com/youtube/v3/search?part=id&maxResults=50&videoCategoryId=10&type=video&key=AIzaSyCtohEkJ6mCItORJn4nSlC3y2LEuHMxyOs';
   let quantity = $('#quantity').val();
