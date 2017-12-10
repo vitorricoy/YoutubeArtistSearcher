@@ -2,6 +2,7 @@
 var ids=[];
 
 function search() {
+  ids=[];
   let q = $('#query').val();
   let url='https://www.googleapis.com/youtube/v3/search?part=id&maxResults=50&videoCategoryId=10&type=video&key=AIzaSyCtohEkJ6mCItORJn4nSlC3y2LEuHMxyOs';
   let quantity = $('#quantity').val();
@@ -28,8 +29,52 @@ function search() {
     		}
     	});
     	console.log(ids);
+    	let tokenAtual=json.nextPageToken;
+    	let novosIds;
+    	while(quantity>ids.length){
+    		novosIds=[];
+    		$.getJSON(url + "&q=" + q + "&pageToken=" + tokenAtual, function (jsonLoop) {
+			  	jsonLoop.items.forEach(function(item){
+			  		novosIds.push(item.id.videoId);
+			  	});
+			  	console.log(novosIds);
+			  	let stringIds = "";
+			  	for(let i=0; i<ids.length; i++){
+			  		stringIds+=ids[i];
+			  		if(i!=ids.length-1){
+			  			stringIds+=',';
+			  		}
+			  	}
+			  	let urlDuration = 'https://www.googleapis.com/youtube/v3/videos?part=contentDetails&key=AIzaSyCtohEkJ6mCItORJn4nSlC3y2LEuHMxyOs'
+			    $.getJSON(urlDuration + "&id=" + stringIds, function (jsonDuration) {
+			    	novosIds=[];
+			    	jsonDuration.items.forEach(function(item){
+			    		let duracao = item.contentDetails.duration;
+			    		duracao = convertISO8601ToSeconds(duracao);
+			    		if(duracao>=60 && duracao<=600){
+			    			novosIds.push(item.id);
+			    		}
+			    	});
+			    	console.log(novosIds);
+			    	ids.concat(novosIds);
+			    });
+			});
+			sleep(500);
+    	}
+    	while(ids.length>quantity){
+    		ids.pop();
+    	}
     });
   });
+}
+
+function sleep(milliseconds) {
+  var start = new Date().getTime();
+  for (var i = 0; i < 1e7; i++) {
+    if ((new Date().getTime() - start) > milliseconds){
+      break;
+    }
+  }
 }
 
 function convertISO8601ToSeconds(input) {
