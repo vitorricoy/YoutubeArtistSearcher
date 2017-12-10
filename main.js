@@ -11,36 +11,44 @@ function search() {
   while(quantity>ids.length){
     novosIds=[];
     console.log(url + "&q=" + q + ((tokenAtual==null)?(''):("&pageToken=" + tokenAtual)));
-    $.getJSON(url + "&q=" + q + ((tokenAtual==null)?(''):("&pageToken=" + tokenAtual)), function (jsonLoop) {
-		console.log(jsonLoop);
-		jsonLoop.items.forEach(function(item){
-			novosIds.push(item.id.videoId);
-		});
-		console.log(novosIds);
-		let stringIds = "";
-		for(let i=0; i<ids.length; i++){
-			stringIds+=ids[i];
-			if(i!=ids.length-1){
-			  	stringIds+=',';
-			}
-		}
-		let urlDuration = 'https://www.googleapis.com/youtube/v3/videos?part=contentDetails&key=AIzaSyCtohEkJ6mCItORJn4nSlC3y2LEuHMxyOs'
-		$.getJSON(urlDuration + "&id=" + stringIds, function (jsonDuration) {
-			novosIds=[];
-			jsonDuration.items.forEach(function(item){
-			    let duracao = item.contentDetails.duration;
-			    duracao = convertISO8601ToSeconds(duracao);
-			    if(duracao>=60 && duracao<=600){
-			    	novosIds.push(item.id);
-			    }
+    $.ajax({
+    	url: (url + "&q=" + q + ((tokenAtual==null)?(''):("&pageToken=" + tokenAtual))),
+    	type: 'GET',
+    	async: false,
+    	success: function (jsonLoop) {
+			console.log(jsonLoop);
+			jsonLoop.items.forEach(function(item){
+				novosIds.push(item.id.videoId);
 			});
 			console.log(novosIds);
-			ids.concat(novosIds);
-			tokenAtual=jsonLoop.nextPageToken;
-		});
+			let stringIds = "";
+			for(let i=0; i<ids.length; i++){
+				stringIds+=ids[i];
+				if(i!=ids.length-1){
+				  	stringIds+=',';
+				}
+			}
+			let urlDuration = 'https://www.googleapis.com/youtube/v3/videos?part=contentDetails&key=AIzaSyCtohEkJ6mCItORJn4nSlC3y2LEuHMxyOs'
+			$.ajax({
+				url: (urlDuration + "&id=" + stringIds),
+				type: 'GET',
+				async: false,
+				success: function (jsonDuration) {
+					novosIds=[];
+					jsonDuration.items.forEach(function(item){
+					    let duracao = item.contentDetails.duration;
+					    duracao = convertISO8601ToSeconds(duracao);
+					    if(duracao>=60 && duracao<=600){
+					    	novosIds.push(item.id);
+					    }
+					});
+					console.log(novosIds);
+					ids.concat(novosIds);
+					tokenAtual=jsonLoop.nextPageToken;
+				}
+			});
+		}
 	});
-	sleep(2000);
-	console.log('fim sleep');
   }
   while(ids.length>quantity){
     ids.pop();
