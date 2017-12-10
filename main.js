@@ -112,3 +112,8 @@ function videoFinished(){
   }
 	player.loadVideoById({'videoId':ids[currentId], 'suggestedQuality': 'tiny'});
 }
+
+function changeVideo(n){
+  currentId=n;
+  player.loadVideoById({'videoId':ids[currentId], 'suggestedQuality': 'tiny'});
+}
