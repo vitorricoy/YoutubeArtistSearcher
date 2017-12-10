@@ -11,7 +11,10 @@ function search() {
   	});
   	console.log(ids);
   	refreshBasedInDurations();
-  	console.log(ids);
+  	SetTimeout(function(){
+  		console.log(ids);
+  	}, 500);
+  	
   });
 }
 
