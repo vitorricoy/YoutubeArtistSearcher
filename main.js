@@ -74,6 +74,7 @@ function search() {
     ids.pop();
     names.pop();
   }
+  $('#playlist').html('');
   names.forEach(function(item, index){
     $('#playlist').append(`<li class="list-group-item" id="item${index}"><a href="javascript:changeVideo(${index})">${item}</a></li>`);
   });
