@@ -10,15 +10,6 @@ function search() {
   		ids.push(item.id.videoId);
   	});
   	console.log(ids);
-  	refreshBasedInDurations();
-  	SetTimeout(function(){
-  		console.log(ids);
-  	}, 500);
-  	
-  });
-}
-
-function refreshBasedInDurations(){
   	let stringIds = "";
   	for(let i=0; i<ids.length; i++){
   		stringIds+=ids[i];
@@ -36,7 +27,9 @@ function refreshBasedInDurations(){
     			ids.push(item.id);
     		}
     	});
+    	console.log(ids);
     });
+  });
 }
 
 function convertISO8601ToSeconds(input) {
