@@ -153,11 +153,7 @@ function stateChanged(event){
 }
 
 function videoFinished(){
-	currentId++;
-  if(currentId==ids.length){
-    currentId=0;
-  }
-	player.loadVideoById({'videoId':ids[currentId], 'suggestedQuality': 'tiny'});
+  next();
 }
 
 function changeVideo(n){
@@ -165,4 +161,48 @@ function changeVideo(n){
   $(`#item${n}`).addClass('active');
   currentId=n;
   player.loadVideoById({'videoId':ids[currentId], 'suggestedQuality': 'tiny'});
+}
+
+function next(){
+  $(`#item${currentId}`).removeClass('active');
+  currentId++;
+  if(currentId==ids.length){
+    currentId=0;
+  }
+  $(`#item${currentId}`).addClass('active');
+  player.loadVideoById({'videoId':ids[currentId], 'suggestedQuality': 'tiny'});
+}
+
+function previous(){
+  $(`#item${currentId}`).removeClass('active');
+  currentId--;
+  if(currentId==-1){
+    currentId=ids.length-1;
+  }
+  $(`#item${currentId}`).addClass('active');
+  player.loadVideoById({'videoId':ids[currentId], 'suggestedQuality': 'tiny'});
+}
+
+function shuffle(){
+  shuffleIdsAndNames();
+}
+
+function shuffleIdsAndNames() {
+    currentId=0;
+    for(let i = ids.length-1; i>0; i--){
+        let j = Math.floor(Math.random() * (i + 1));
+        let temp = ids[i];
+        ids[i] = ids[j];
+        ids[j] = temp;
+        temp = names[i];
+        names[i] = names[j];
+        names[j] = temp;
+    }
+    $('#playlist').html('');
+    names.forEach(function(item, index){
+      $('#playlist').append(`<li class="list-group-item" id="item${index}"><a href="javascript:changeVideo(${index})">${item}</a></li>`);
+    });
+    $(`#item0`).addClass('active');
+    $('#playlist').removeClass('invisible');
+    player.loadVideoById({'videoId':ids[currentId], 'suggestedQuality': 'tiny'});
 }

@@ -2,7 +2,8 @@
   <head>
     <title>Video Searcher Youtube</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/style.css">
   </head>
   <body>
     <div class="container">
@@ -37,17 +38,31 @@
 		    </div>
 	    </div>
 	    <br><br>
+	    <div class="row" id="controls">
+	    	<div class="col-xs-4 centerDiv">
+	    		<a href="javascript:previous()"><i class="fa fa-chevron-left fa-6" aria-hidden="true" title="Previous"></i></a>
+	    	</div>
+	    	<div class="col-xs-4 centerDiv">
+	    		<a href="javascript:shuffle()"><i class="fa fa-random fa-6" aria-hidden="true" title="Shuffle"></i></a>
+	    	</div>
+	    	<div class="col-xs-4 centerDiv">
+	    		<a href="javascript:next()"><i class="fa fa-chevron-right fa-6" aria-hidden="true" title="Next"></i></a>
+	    	</div>
+
+	    </div>
+	    <br>
 	    <div class="row">
 	    	<div class="col-xs-10 col-xs-offset-1">
 	    		<ul class="list-group" id="playlist">
-	    		
+
 				</ul>
 	    	</div>
 	    </div>
+
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://www.youtube.com/player_api"></script>
-    <script src="main.js"></script>
+    <script src="js/main.js"></script>
   </body>
 </html>
